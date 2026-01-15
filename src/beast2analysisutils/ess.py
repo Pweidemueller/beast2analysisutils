@@ -239,7 +239,7 @@ def analyze_ess(
         val = effective_sample_size(df_burnin[col].values)
         results.append({"Parameter": col, "ESS": val})
 
-    results_df = pd.DataFrame(results).sort_values("Parameter")
+    results_df = pd.DataFrame(results).sort_values("ESS")
 
     # 4. Save Results
     results_df.to_csv(output_path, index=False)

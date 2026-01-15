@@ -1,0 +1,18 @@
+site_name: beast2analysisutils
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+
+nav:
+  - Home: index.md
+  - Reference: reference.md
