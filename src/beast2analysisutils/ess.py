@@ -22,18 +22,13 @@ def effective_sample_size(
     - Sums positive autocorrelations
     - ESS = N / (1 + 2 * sum)
 
-    Parameters
-    ----------
-    x : array-like
-        Time series data
-    max_lag : int, optional
-        Maximum lag for autocorrelation calculation. If None, uses
-        min(N-1, 10000) where N is the length of x.
+    Args:
+        x: Time series data.
+        max_lag: Maximum lag for autocorrelation calculation. If None, uses
+            min(N-1, 10000) where N is the length of x.
 
-    Returns
-    -------
-    ess : float
-        Effective sample size
+    Returns:
+        float: Effective sample size.
     """
     x = np.asarray(x, dtype=float)
     N = len(x)
@@ -82,19 +77,14 @@ def find_ess_threshold(
     """
     Find the minimum number of samples needed to achieve ESS >= threshold.
 
-    Parameters
-    ----------
-    data : array-like
-        Logged sequential data
-    threshold : float
-        ESS threshold to achieve
-    max_lag : int, optional
-        Maximum lag for autocorrelation calculation
+    Args:
+        data: Logged sequential data.
+        threshold: ESS threshold to achieve.
+        max_lag: Maximum lag for autocorrelation calculation.
 
-    Returns
-    -------
-    n_samples : int or None
-        Minimum number of samples needed to achieve ESS >= threshold, or None if threshold not reached
+    Returns:
+        int or None: Minimum number of samples needed to achieve ESS >= threshold,
+            or None if threshold not reached.
     """
     data = np.asarray(data)
     N = len(data)
@@ -122,17 +112,13 @@ def read_log_file(filename: str) -> Tuple[List[str], np.ndarray]:
 
     This function parses the standard BEAST .log format, ignoring comments.
 
-    Parameters
-    ----------
-    filename : str
-        Path to log file
+    Args:
+        filename: Path to log file.
 
-    Returns
-    -------
-    header : list
-        Column names
-    data : numpy.ndarray
-        Data matrix (samples x parameters)
+    Returns:
+        Tuple[List[str], np.ndarray]: A tuple containing:
+            - header: Column names
+            - data: Data matrix (samples x parameters)
     """
     header = None
     data_rows = []
@@ -180,22 +166,15 @@ def analyze_ess(
     """
     Calculate ESS for a BEAST log file or DataFrame and save results.
 
-    Parameters
-    ----------
-    log_source : str or pd.DataFrame
-        Path to the BEAST log file or a pandas DataFrame.
-    output_path : str
-        Path to save the CSV results table.
-    burnin : float, optional
-        Fraction of samples to discard as burn-in (0.0 to 1.0), default 0.1.
-    check_threshold : bool, optional
-        If True, prints a report on how many samples were needed to reach ESS > 200
-        for 'posterior', 'prior', and 'likelihood' columns (if present aka intersection).
+    Args:
+        log_source: Path to the BEAST log file or a pandas DataFrame.
+        output_path: Path to save the CSV results table.
+        burnin: Fraction of samples to discard as burn-in (0.0 to 1.0), default 0.1.
+        check_threshold: If True, prints a report on how many samples were needed to reach ESS > 200
+            for 'posterior', 'prior', and 'likelihood' columns (if present aka intersection).
 
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame containing the calculated ESS values for each parameter.
+    Returns:
+        pd.DataFrame: DataFrame containing the calculated ESS values for each parameter.
     """
     # 1. Load Data
     if isinstance(log_source, str):
