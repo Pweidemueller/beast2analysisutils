@@ -17,6 +17,7 @@ def effective_sample_size(
     Calculate effective sample size using autocorrelation.
 
     This matches the R effectiveSize function behavior:
+
     - Demeans the data
     - Calculates autocorrelation up to max_lag
     - Sums positive autocorrelations
