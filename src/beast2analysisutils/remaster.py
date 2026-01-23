@@ -298,7 +298,7 @@ def fill_template(template_path, output_path, sequences, dates, types, newick_tr
     with open(output_path, "w") as f:
         f.write(new_content)
 
-def generate_xml(template_path, tree_path, output_path, nexus_path=None, fixed_tree=False, start_date="2000/01/01"):
+def generate_xml(template_path, tree_path, output_path, alignment_path=None, fixed_tree=False, start_date="2000/01/01"):
     """
     Wrapper function to generate BEAST2 XML from ReMASTER output.
 
@@ -306,22 +306,22 @@ def generate_xml(template_path, tree_path, output_path, nexus_path=None, fixed_t
         template_path (str): Path to the XML template.
         tree_path (str): Path to the ReMASTER tree file.
         output_path (str): Path where the final XML will be saved.
-        nexus_path (str, optional): Path to the ReMASTER nexus alignment file. Required if fixed_tree is False.
+        alignment_path (str, optional): Path to the ReMASTER nexus alignment file. Required if fixed_tree is False.
         fixed_tree (bool): Whether to use fixed tree mode.
         start_date (str): Start date for time conversion (YYYY/MM/DD). Defaults to "2000/01/01".
     """
     
     # Validation
-    if not fixed_tree and nexus_path is None:
-        raise ValueError("nexus_path is required when fixed_tree is False.")
+    if not fixed_tree and alignment_path is None:
+        raise ValueError("alignment_path is required when fixed_tree is False.")
     
     # Extract data
-    # extract_remaster_data now handles None nexus_path by generating dummy sequences
-    sequences, times, types, newick_tree = extract_remaster_data(nexus_path, tree_path)
+    # extract_remaster_data now handles None alignment_path by generating dummy sequences
+    sequences, times, types, newick_tree = extract_remaster_data(alignment_path, tree_path)
     
     # Print Info
     print("--- Remaster Wrapper Info ---")
-    if nexus_path:
+    if alignment_path:
         print(f"Number of sequences in nexus file: {len(sequences)}")
     else:
         print(f"Number of sequences (artificial): {len(sequences)}")

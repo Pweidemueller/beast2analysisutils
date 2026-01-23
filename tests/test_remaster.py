@@ -126,7 +126,7 @@ def test_generate_xml_wrapper_standard(tmp_path):
         template_path=TEMPLATE_PATH,
         tree_path=TREE_PATH,
         output_path=str(output_xml),
-        nexus_path=ALIGNMENT_PATH,
+        alignment_path=ALIGNMENT_PATH,
         fixed_tree=False
     )
     
@@ -149,12 +149,12 @@ def test_generate_xml_wrapper_fixed_tree(tmp_path):
             f.write('<beast><data>INSERTSEQUENCES</data><tree>INSERTNEWICKTREE</tree><trait>INSERTTRAITTYPES</trait></beast>')
         template_path = str(mock_template)
 
-    # Run without nexus (optional for fixed tree)
+    # Run without alignment (optional for fixed tree)
     generate_xml(
         template_path=template_path,
         tree_path=TREE_PATH,
         output_path=str(output_xml),
-        nexus_path=None,
+        alignment_path=None,
         fixed_tree=True
     )
     
@@ -167,6 +167,6 @@ def test_generate_xml_wrapper_fixed_tree(tmp_path):
 def test_generate_xml_validation():
     from beast2analysisutils.remaster import generate_xml
     
-    # Should raise error if fixed_tree=False but no nexus_path
-    with pytest.raises(ValueError, match="nexus_path is required"):
-        generate_xml("tpl", "tree", "out", nexus_path=None, fixed_tree=False)
+    # Should raise error if fixed_tree=False but no alignment_path
+    with pytest.raises(ValueError, match="alignment_path is required"):
+        generate_xml("tpl", "tree", "out", alignment_path=None, fixed_tree=False)

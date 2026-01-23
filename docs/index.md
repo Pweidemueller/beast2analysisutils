@@ -55,7 +55,7 @@ generate_xml(
     template_path="./Template.xml",
     tree_path="simulation.trees",      # ReMASTER tree output
     output_path="output.xml",
-    nexus_path="simulation.nexus",     # ReMASTER alignment output
+    alignment_path="simulation.nexus", # ReMASTER alignment output
     fixed_tree=False                   # Default
 )
 ```
@@ -70,7 +70,7 @@ generate_xml(
     template_path="./Template_fixedtree.xml",
     tree_path="simulation.trees",
     output_path="output_fixed.xml",
-    nexus_path=None,                   # Optional for fixed tree
+    alignment_path=None,               # Optional for fixed tree
     fixed_tree=True
 )
 ```
