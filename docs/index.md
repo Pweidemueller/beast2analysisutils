@@ -4,8 +4,8 @@ A miscellaneous collection of analysis utilities that I frequently use in the BE
 
 Broadly there are two types of analysis currently in this package:
 
-1. Using ReMASTER output to construct BEAST2 XML files from templates by inserting simulated trees and/or sequences.
-2. Calculating the effective sample sizes (ESS) for all parameters in a BEAST2 log file.
+1. **ReMASTER XML Generation**: Construct BEAST2 XML files from templates by inserting simulated trees and/or sequences from ReMASTER output.
+2. **ESS Analysis**: Calculate the effective sample sizes (ESS) for all parameters in a BEAST2 log file.
 
 ## Installation
 
@@ -28,20 +28,92 @@ pip install git+https://github.com/Pweidemueller/beast2analysisutils.git
 uv pip install git+https://github.com/Pweidemueller/beast2analysisutils.git
 ```
 
-## Usage
+## Quick Start
 
-See the [Reference](reference.md) page for API details.
+See the [Reference](reference.md) page for full API details.
 
-## ReMASTER to BEAST2 XML Workflow
+### 1. BEAST2 XML Generation from ReMASTER Output
 
-This package provides functionality to generate BEAST2 XML configuration files by combining a template XML with simulation data from ReMASTER (Nexus alignment and tree).
+This module helps you turn ReMASTER simulation outputs (Nexus alignment + Tree) into runnable BEAST2 XMLs given a template XML.
 
-### XML Template Requirements
-Your input template XML must be a valid BEAST2 XML file (except for the placeholders) and **must** contain the following three specific placeholders, which will be replaced by the extracted data:
+#### Step 1: Construct Templates
+You will need to construct your own BEAST2 templates based on the analysis that you would like to do. If you want to see two examples, the package provides two templates for fixed and estimated tree analyses. You can download them directly from GitHub:
 
-1.  `INSERTSEQUENCES`: Replaced with the `<sequence>` blocks inside the alignment `<data>` element.
-2.  `INSERTTRAITDATES`: Replaced with a comma-separated string of `taxon=date` pairs (e.g., `taxonA=2020/01/01,taxonB=2020/02/15`).
-3.  `INSERTTRAITTYPES`: Replaced with a comma-separated string of `taxon=type` pairs (e.g., `taxonA=location1,taxonB=location2`).
+- **Alignment based Template**: [Template.xml](https://raw.githubusercontent.com/Pweidemueller/beast2analysisutils/main/src/beast2analysisutils/data/templates/Template.xml)
+- **Fixed Tree based Template**: [Template_fixedtree.xml](https://raw.githubusercontent.com/Pweidemueller/beast2analysisutils/main/src/beast2analysisutils/data/templates/Template_fixedtree.xml)
+
+#### Step 2: Generate XML
+Use the `generate_xml` wrapper function.
+
+**Scenario A: Standard Analysis (Tree will be estimated)**
+Requires both a Nexus alignment file and a Tree file from ReMASTER.
+
+```python
+from beast2analysisutils.remaster import generate_xml
+
+generate_xml(
+    template_path="./Template.xml",
+    tree_path="simulation.trees",      # ReMASTER tree output
+    output_path="output.xml",
+    nexus_path="simulation.nexus",     # ReMASTER alignment output
+    fixed_tree=False                   # Default
+)
+```
+
+**Scenario B: Fixed Tree Analysis**
+Uses the simulated tree directly in the XML. Nexus file is optional (dummy sequences will be generated if missing).
+
+```python
+from beast2analysisutils.remaster import generate_xml
+
+generate_xml(
+    template_path="./Template_fixedtree.xml",
+    tree_path="simulation.trees",
+    output_path="output_fixed.xml",
+    nexus_path=None,                   # Optional for fixed tree
+    fixed_tree=True
+)
+```
+
+### 2. ESS Analysis
+
+Calculate ESS for all parameters in a BEAST2 log file to check for convergence.
+
+```python
+from beast2analysisutils.ess import analyze_ess
+
+# Calculate ESS for all numeric columns
+ess_df = analyze_ess(
+    log_source="beast_output.log",
+    output_path="ess_results.csv",
+    burnin=0.1,             # 10% burn-in
+    check_threshold=True    # Check if ESS > 200 for key parameters
+)
+
+print(ess_df.head())
+```
+
+## Detailed Documentation
+
+### ReMASTER to BEAST2 XML Workflow
+
+This package provides functionality to generate BEAST2 XML configuration files by combining a template XML with simulation data.
+
+#### Wrapper Function: `generate_xml`
+The `generate_xml` function is the main entry point. It performs the following steps:
+1.  **Validates Inputs**: Checks for required files based on `fixed_tree` mode.
+2.  **Extracts Data**: Parses sequences, leaf dates, and types from input files.
+3.  **Consistency Check**: Verifies that the number of sequences matches the number of tree leaves.
+4.  **Prints Stats**: Displays sequence counts, leaf counts, trait distribution, and date ranges.
+5.  **Generates XML**: Fills the template with the processed data.
+
+#### XML Template Requirements
+Your input template XML must be a valid BEAST2 XML file containing specific placeholders:
+
+1.  `INSERTSEQUENCES`: Replaced with `<sequence>` blocks.
+2.  `INSERTTRAITDATES`: (not needed for fixed tree) Replaced with `taxon=date` pairs (YYYY/MM/DD).
+3.  `INSERTTRAITTYPES`: Replaced with `taxon=type` pairs.
+4.  `INSERTNEWICKTREE`: (Fixed tree only) Replaced with the Newick tree string.
 
 **Example Template Structure:**
 ```xml
@@ -53,18 +125,15 @@ Your input template XML must be a valid BEAST2 XML file (except for the placehol
     ...
 </trait>
 
-<trait id="typeTrait" spec="trait.TraitSet" traitname="type" value="INSERTTRAITTYPES">
+<trait id="typeTrait" spec="mascot.util.InitializedTraitSet" traitname="type" value="INSERTTRAITTYPES">
     ...
 </trait>
+
+<!-- For Fixed Tree templates -->
+<init id="NewickTree" spec="beast.base.evolution.tree.TreeParser" newick="INSERTNEWICKTREE" .../>
 ```
 
 ### Time and Date Interpretation
-ReMASTER simulations typically output trees with a `time` attribute for each node. In this package, this `time` attribute is interpreted as the **time (in years) passed since the start of the simulation**.
-
-To generate valid calendar dates for BEAST2:
-1.  You provide an **artificial start date** (e.g., "2000/01/01").
-2.  The package reads the `time` (years) from the ReMASTER tree for each leaf.
-3.  It calculates the leaf date as: `StartDate + time (converted to days)`.
-4.  These calculated dates are inserted into the `INSERTTRAITDATES` placeholder in the format `YYYY/MM/DD`.
-
-*Note: The `INSERTTRAITDATES` replacement string assumes the template expects a date format of `YYYY/MM/DD`.*
+ReMASTER simulations typically output trees with a `time` attribute (years since simulation start).
+The package converts these to calendar dates using a reference `start_date` (default "2000/01/01").
+leaf_date = `start_date` + `time` (converted to days).

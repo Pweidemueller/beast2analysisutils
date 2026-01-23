@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST.base v2.7.4:Mascot v3.0.0" version="2.7">
+
+    <data id="H3N2" spec="Alignment" name="alignment">
+        INSERTSEQUENCES
+    </data>
+    <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+    <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+    <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+    <map name="Normal" >beast.base.inference.distribution.Normal</map>
+    <map name="Beta" >beast.base.inference.distribution.Beta</map>
+    <map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+    <map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+    <map name="prior" >beast.base.inference.distribution.Prior</map>
+    <map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+    <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+    <run id="mcmc" spec="MCMC" chainLength="2000000">
+        <state id="state" spec="State" storeEvery="5000">
+            <tree id="Tree.t:H3N2" spec="beast.base.evolution.tree.Tree" name="stateNode">
+                <taxonset id="TaxonSet.H3N2" spec="TaxonSet">
+                    <alignment idref="H3N2"/>
+                </taxonset>
+            </tree>
+            <parameter id="clockRate.c:H3N2" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.005</parameter>
+            <parameter id="gammaShape.s:H3N2" spec="parameter.RealParameter" lower="0.1" name="stateNode">1.0</parameter>
+            <parameter id="kappa.s:H3N2" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
+            <parameter id="NeConstant.t:H3N2" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="migrationConstant.t:H3N2" spec="parameter.RealParameter" dimension="0" lower="0.0" name="stateNode">1.0</parameter>
+        </state>
+        <init id="NewickTree.t:H3N2" spec="beast.base.evolution.tree.TreeParser" estimate="false" initial="@Tree.t:H3N2" taxa="@H3N2" IsLabelledNewick="true" newick="INSERTNEWICKTREE">
+        </init>
+        <distribution id="posterior" spec="CompoundDistribution">
+            <distribution id="prior" spec="CompoundDistribution">
+                <distribution id="Mascot.t:H3N2" spec="mascot.distribution.Mascot" tree="@Tree.t:H3N2">
+                    <dynamics id="Constant.t:H3N2" spec="mascot.dynamics.Constant" Ne="@NeConstant.t:H3N2" backwardsMigration="@migrationConstant.t:H3N2" dimension="1">
+                        <typeTrait id="typeTraitSet.t:H3N2" spec="mascot.util.InitializedTraitSet" traitname="type" value="INSERTTRAITTYPES">
+                            <taxa id="TaxonSet.1" spec="TaxonSet" alignment="@H3N2"/>
+                        </typeTrait>
+                    </dynamics>
+                    <structuredTreeIntervals id="StructuredTreeIntervals.t:H3N2" spec="mascot.distribution.StructuredTreeIntervals" tree="@Tree.t:H3N2"/>
+                </distribution>
+                <prior id="NeConstantPrior.t:H3N2" name="distribution" x="@NeConstant.t:H3N2">
+                    <LogNormal id="LogNormalDistributionModel.1" name="distr">
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="M">0.0</parameter>
+                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" lower="0.0" name="S" upper="5.0">1.0</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="ClockPrior.c:H3N2" name="distribution" x="@clockRate.c:H3N2">
+                    <LogNormal id="LogNormalDistributionModel.2" meanInRealSpace="true" name="distr">
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">0.005</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" lower="0.0" name="S" upper="5.0">0.25</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="GammaShapePrior.s:H3N2" name="distribution" x="@gammaShape.s:H3N2">
+                    <Exponential id="Exponential.0" name="distr">
+                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                    </Exponential>
+                </prior>
+                <prior id="KappaPrior.s:H3N2" name="distribution" x="@kappa.s:H3N2">
+                    <LogNormal id="LogNormalDistributionModel.0" name="distr">
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="S">1.25</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="migrationConstantPrior.t:H3N2" name="distribution" x="@migrationConstant.t:H3N2">
+                    <Exponential id="Exponential.3" name="distr">
+                        <parameter id="RealParameter.10" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                    </Exponential>
+                </prior>
+            </distribution>
+            <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.H3N2" spec="ThreadedTreeLikelihood" data="@H3N2" tree="@Tree.t:H3N2">
+                    <siteModel id="SiteModel.s:H3N2" spec="SiteModel" gammaCategoryCount="4" shape="@gammaShape.s:H3N2">
+                        <parameter id="mutationRate.s:H3N2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="mutationRate">1.0</parameter>
+                        <parameter id="proportionInvariant.s:H3N2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="hky.s:H3N2" spec="HKY" kappa="@kappa.s:H3N2">
+                            <frequencies id="empiricalFreqs.s:H3N2" spec="Frequencies" data="@H3N2"/>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="StrictClock.c:H3N2" spec="beast.base.evolution.branchratemodel.StrictClockModel" clock.rate="@clockRate.c:H3N2"/>
+                </distribution>
+            </distribution>
+        </distribution>
+        <operator id="StrictClockRateScaler.c:H3N2" spec="AdaptableOperatorSampler" weight="1.5">
+            <parameter idref="clockRate.c:H3N2"/>
+            <operator id="AVMNOperator.H3N2" spec="kernel.AdaptableVarianceMultivariateNormalOperator" allowNonsense="true" beta="0.05" burnin="400" initial="800" weight="0.1">
+                <transformations id="AVMNSumTransform.H3N2" spec="operator.kernel.Transform$LogConstrainedSumTransform"/>
+                <transformations id="AVMNLogTransform.H3N2" spec="operator.kernel.Transform$LogTransform">
+                    <f idref="clockRate.c:H3N2"/>
+                    <f idref="gammaShape.s:H3N2"/>
+                    <f idref="kappa.s:H3N2"/>
+                </transformations>
+                <transformations id="AVMNNoTransform.H3N2" spec="operator.kernel.Transform$NoTransform">
+                    <f idref="Tree.t:H3N2"/>
+                </transformations>
+            </operator>
+            <operator id="StrictClockRateScalerX.c:H3N2" spec="kernel.BactrianScaleOperator" parameter="@clockRate.c:H3N2" upper="10.0" weight="3.0"/>
+        </operator>
+        <operator id="strictClockUpDownOperator.c:H3N2" spec="AdaptableOperatorSampler" weight="1.5">
+            <parameter idref="clockRate.c:H3N2"/>
+            <tree idref="Tree.t:H3N2"/>
+            <operator idref="AVMNOperator.H3N2"/>
+            <operator id="strictClockUpDownOperatorX.c:H3N2" spec="operator.kernel.BactrianUpDownOperator" scaleFactor="0.75" weight="3.0">
+                <up idref="clockRate.c:H3N2"/>
+                <down idref="Tree.t:H3N2"/>
+            </operator>
+        </operator>
+        <operator id="gammaShapeScaler.s:H3N2" spec="AdaptableOperatorSampler" weight="0.05">
+            <parameter idref="gammaShape.s:H3N2"/>
+            <operator idref="AVMNOperator.H3N2"/>
+            <operator id="gammaShapeScalerX.s:H3N2" spec="kernel.BactrianScaleOperator" parameter="@gammaShape.s:H3N2" scaleFactor="0.5" upper="10.0" weight="0.1"/>
+        </operator>
+        <operator id="KappaScaler.s:H3N2" spec="AdaptableOperatorSampler" weight="0.05">
+            <parameter idref="kappa.s:H3N2"/>
+            <operator idref="AVMNOperator.H3N2"/>
+            <operator id="KappaScalerX.s:H3N2" spec="kernel.BactrianScaleOperator" parameter="@kappa.s:H3N2" scaleFactor="0.1" upper="10.0" weight="0.1"/>
+        </operator>
+        <operator id="MascotBICEPSEpochTop.t:H3N2" spec="EpochFlexOperator" scaleFactor="0.1" tree="@Tree.t:H3N2" weight="2.0"/>
+        <operator id="MascotBICEPSEpochAll.t:H3N2" spec="EpochFlexOperator" fromOldestTipOnly="false" scaleFactor="0.1" tree="@Tree.t:H3N2" weight="2.0"/>
+        <operator id="MascotBICEPSTreeFlex.t:H3N2" spec="TreeStretchOperator" scaleFactor="0.01" tree="@Tree.t:H3N2" weight="2.0"/>
+        <operator id="MascotTreeRootScaler.t:H3N2" spec="kernel.BactrianScaleOperator" rootOnly="true" scaleFactor="0.1" tree="@Tree.t:H3N2" upper="10.0" weight="3.0"/>
+        <operator id="MascotUniformOperator.t:H3N2" spec="kernel.BactrianNodeOperator" tree="@Tree.t:H3N2" weight="30.0"/>
+        <operator id="MascotSubtreeSlide.t:H3N2" spec="kernel.BactrianSubtreeSlide" tree="@Tree.t:H3N2" weight="15.0"/>
+        <operator id="MascotNarrow.t:H3N2" spec="Exchange" tree="@Tree.t:H3N2" weight="15.0"/>
+        <operator id="MascotWide.t:H3N2" spec="Exchange" isNarrow="false" tree="@Tree.t:H3N2" weight="3.0"/>
+        <operator id="MascotWilsonBalding.t:H3N2" spec="WilsonBalding" tree="@Tree.t:H3N2" weight="3.0"/>
+        <operator id="NeConstantScaler.t:H3N2" spec="ScaleOperator" parameter="@NeConstant.t:H3N2" weight="3.0"/>
+        <operator id="migrationConstantScaler.t:H3N2" spec="ScaleOperator" parameter="@migrationConstant.t:H3N2" weight="3.0"/>
+        <logger id="tracelog" spec="Logger" fileName="$(filebase).log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.H3N2"/>
+            <log id="TreeHeight.t:H3N2" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:H3N2"/>
+            <log idref="clockRate.c:H3N2"/>
+            <log idref="gammaShape.s:H3N2"/>
+            <log idref="kappa.s:H3N2"/>
+            <log idref="Mascot.t:H3N2"/>
+            <log idref="Constant.t:H3N2"/>
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="1000">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+        <logger id="treelog.t:H3N2" spec="Logger" fileName="$(filebase).trees" logEvery="5000" mode="tree" sanitiseHeaders="true">
+            <log id="TreeWithMetaDataLogger.t:H3N2" spec="beast.base.evolution.TreeWithMetaDataLogger" tree="@Tree.t:H3N2"/>
+        </logger>
+        <logger id="typedTreelogger.t:H3N2" spec="Logger" fileName="$(filebase)-typed.trees" logEvery="1000" mode="tree">
+            <log id="structuredTreelog.t:H3N2" spec="mascot.logger.StructuredTreeLogger" mascot="@Mascot.t:H3N2"/>
+        </logger>
+        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
+    </run>
+
+</beast>

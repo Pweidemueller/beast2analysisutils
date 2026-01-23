@@ -16,8 +16,6 @@ def effective_sample_size(
     """
     Calculate effective sample size using autocorrelation.
 
-    This matches the R effectiveSize function behavior:
-
     - Demeans the data
     - Calculates autocorrelation up to max_lag
     - Sums positive autocorrelations
@@ -48,6 +46,7 @@ def effective_sample_size(
 
     # Calculate autocorrelation function (matching R's acf with type="correlation")
     # Autocorrelation at lag k: r_k = Cov(X_t, X_{t+k}) / Var(X)
+    # Calculate Var(X)
     variance = np.var(x_demeaned, ddof=0)
     if variance == 0:
         return float("inf")  # Constant series has infinite ESS
