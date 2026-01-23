@@ -1,5 +1,5 @@
 import numpy as np
-from beast2analysisutils import effective_sample_size, read_log_file, analyze_ess
+from beast2analysisutils.ess import effective_sample_size, read_log_file, analyze_ess
 
 
 def test_effective_sample_size_constant():

@@ -19,6 +19,8 @@ requires-python = ">=3.7"
 dependencies = [
     "numpy>=1.20",
     "pandas>=1.0",
+    "biopython>=1.80",
+    "dendropy>=4.5.2",
 ]
 
 [project.optional-dependencies]

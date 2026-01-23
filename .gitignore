@@ -5,3 +5,4 @@ __pycache__/
 *.egg-info/
 site/
 .ruff_cache/
+temporary_files/
