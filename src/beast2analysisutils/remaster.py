@@ -1,11 +1,12 @@
 import dendropy
-from Bio import AlignIO
+from Bio import AlignIO, Phylo
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
 from datetime import datetime, timedelta
 import pandas as pd
 import os
 import io
+from io import StringIO
 import re
 
 def get_state0_newick(nexus_text):
@@ -88,6 +89,33 @@ def get_state0_newick(nexus_text):
 
     # Return a valid Newick with trailing semicolon
     return tree_str + ";"
+
+def collapse_single_child_nodes(clade):
+    """
+    Recursively collapse nodes with a single child, adding branch lengths.
+    """
+    # If the clade is terminal, return it unchanged
+    if clade.is_terminal():
+        return clade
+
+    # Process children first (postorder traversal)
+    new_clades = []
+    for child in clade.clades:
+        simplified_child = collapse_single_child_nodes(child)
+        new_clades.append(simplified_child)
+
+    clade.clades = new_clades
+
+    # If this node has only one child, collapse it
+    if len(clade.clades) == 1:
+        child = clade.clades[0]
+        # Add this clade's branch length to the child's branch length
+        child.branch_length = (child.branch_length or 0) + (clade.branch_length or 0)
+        return child  # Return the collapsed child
+
+    # If this node has more than one child, keep it
+    return clade
+
 
 def extract_remaster_data(alignment_path, tree_path):
     """
@@ -187,7 +215,13 @@ def extract_remaster_data(alignment_path, tree_path):
     
     # We use the custom parser to get a clean Newick string suitable for TreeParser
     try:
-        newick_tree = get_state0_newick(tree_text)
+        raw_newick_tree = get_state0_newick(tree_text)
+        
+        # Collapse single child nodes
+        tree_obj = Phylo.read(StringIO(raw_newick_tree), "newick")
+        tree_obj.root = collapse_single_child_nodes(tree_obj.root)
+        newick_tree = tree_obj.format("newick").strip()
+
     except Exception as e:
         # If extraction fails (e.g. unexpected format), we might not have a tree string
         # This is okay if we aren't using a fixed tree template, but let's warn or return None

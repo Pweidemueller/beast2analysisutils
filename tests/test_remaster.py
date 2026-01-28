@@ -170,3 +170,75 @@ def test_generate_xml_validation():
     # Should raise error if fixed_tree=False but no alignment_path
     with pytest.raises(ValueError, match="alignment_path is required"):
         generate_xml("tpl", "tree", "out", alignment_path=None, fixed_tree=False)
+
+def test_collapse_single_child_nodes():
+    from beast2analysisutils.remaster import collapse_single_child_nodes
+    from Bio import Phylo
+    from io import StringIO
+
+    # Tree with a single child node:
+    # Root -> (Child1, SingleChildParent)
+    # SingleChildParent -> (GrandChild)
+    # Structure: ((A:1.0, B:1.0):0.0, (C:0.5)SingleParent:0.5):0.0;
+    # Wait, let's simplify: (A:1.0, (C:0.5)SingleParent:0.5):0.0;
+    # SingleParent has one child C.
+    # Should collapse to (A:1.0, C:1.0):0.0;
+    
+    tree_str = "(A:1.0,(C:0.5)SingleParent:0.5):0.0;"
+    tree = Phylo.read(StringIO(tree_str), "newick")
+    
+    # Collapse
+    tree.root = collapse_single_child_nodes(tree.root)
+    
+    # Verify
+    # Root should have 2 children: A and C (collapsed)
+    assert len(tree.root.clades) == 2
+    
+    # Get clades by name
+    clades = {c.name: c for c in tree.root.clades}
+    
+    assert "A" in clades
+    assert clades["A"].branch_length == 1.0
+    
+    assert "C" in clades
+    # C's branch length should be sum of its original (0.5) and parent's (0.5)
+    assert clades["C"].branch_length == 1.0
+
+def test_extract_remaster_data_collapses_single_nodes(tmp_path):
+    from beast2analysisutils.remaster import extract_remaster_data
+    import textwrap
+    
+    # Create a dummy tree file with single child node
+    # Note: Using numeric IDs in Newick string matching Translate block
+    # (1:1.0,(2:0.5)SingleParent:0.5):0.0;
+    tree_content = textwrap.dedent("""\
+        #NEXUS
+        begin trees;
+            Translate
+                1 A,
+                2 B
+            ;
+        tree STATE_0 = [&R] (1:1.0,(2:0.5)SingleParent:0.5):0.0;
+    end;
+        """)
+
+    
+    tree_file = tmp_path / "single_node.trees"
+    with open(tree_file, "w") as f:
+        f.write(tree_content)
+        
+    # We pass None for alignment_path as we only care about tree
+    _, _, _, newick_tree = extract_remaster_data(None, str(tree_file))
+    
+    # Expected: (A:1.00000,B:1.00000):0.00000; or similar floating point
+    # Specifically, B should have length ~1.0 (0.5 + 0.5)
+    # And SingleParent should not be in the string (collapsed)
+    
+    assert "SingleParent" not in newick_tree
+    
+    # Check if B has length 1.0
+    # Format usually keeps some decimals
+    assert "B:1.0" in newick_tree or "B:1." in newick_tree
+
+
+
