@@ -1,0 +1,790 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="reference/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>beast2analysisutils</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#welcome-to-beast2analysisutils" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="beast2analysisutils" class="md-header__button md-logo" aria-label="beast2analysisutils" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            beast2analysisutils
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="beast2analysisutils" class="md-nav__button md-logo" aria-label="beast2analysisutils" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    beast2analysisutils
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-beast2-xml-generation-from-remaster-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. BEAST2 XML Generation from ReMASTER Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. BEAST2 XML Generation from ReMASTER Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-construct-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Construct Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-generate-xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Generate XML
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ess-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ESS Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remaster-to-beast2-xml-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReMASTER to BEAST2 XML Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReMASTER to BEAST2 XML Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function-generate_xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrapper Function: generate_xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-template-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML Template Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-and-date-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time and Date Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-beast2-xml-generation-from-remaster-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. BEAST2 XML Generation from ReMASTER Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. BEAST2 XML Generation from ReMASTER Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-construct-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Construct Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-generate-xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Generate XML
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ess-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ESS Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remaster-to-beast2-xml-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReMASTER to BEAST2 XML Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReMASTER to BEAST2 XML Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function-generate_xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrapper Function: generate_xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-template-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML Template Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-and-date-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time and Date Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="welcome-to-beast2analysisutils">Welcome to beast2analysisutils</h1>
+<p>A miscellaneous collection of analysis utilities that I frequently use in the BEAST2 ecosystem.</p>
+<p>Broadly there are two types of analysis currently in this package:</p>
+<ol>
+<li><strong>ReMASTER XML Generation</strong>: Construct BEAST2 XML files from templates by inserting simulated trees and/or sequences from ReMASTER output.</li>
+<li><strong>ESS Analysis</strong>: Calculate the effective sample sizes (ESS) for all parameters in a BEAST2 log file.</li>
+</ol>
+<h2 id="installation">Installation</h2>
+<p>If you already have a python environment set up, you can install this package via <code>pip</code> directly from GitHub.</p>
+<p><strong>1. Conda Environment</strong></p>
+<pre><code class="language-bash">conda activate my_analysis_env
+pip install git+https://github.com/Pweidemueller/beast2analysisutils.git
+</code></pre>
+<p><strong>2. Standard pip/venv</strong></p>
+<pre><code class="language-bash">source .venv/bin/activate
+pip install git+https://github.com/Pweidemueller/beast2analysisutils.git
+</code></pre>
+<p><strong>3. uv Environment</strong></p>
+<pre><code class="language-bash">uv pip install git+https://github.com/Pweidemueller/beast2analysisutils.git
+</code></pre>
+<h2 id="quick-start">Quick Start</h2>
+<p>See the <a href="reference/">Reference</a> page for full API details.</p>
+<h3 id="1-beast2-xml-generation-from-remaster-output">1. BEAST2 XML Generation from ReMASTER Output</h3>
+<p>This module helps you turn ReMASTER simulation outputs (Nexus alignment + Tree) into runnable BEAST2 XMLs given a template XML.</p>
+<h4 id="step-1-construct-templates">Step 1: Construct Templates</h4>
+<p>You will need to construct your own BEAST2 templates based on the analysis that you would like to do. If you want to see two examples, the package provides two templates for fixed and estimated tree analyses. You can download them directly from GitHub:</p>
+<ul>
+<li><strong>Alignment based Template</strong>: <a href="https://raw.githubusercontent.com/Pweidemueller/beast2analysisutils/main/src/beast2analysisutils/data/templates/Template.xml">Template.xml</a></li>
+<li><strong>Fixed Tree based Template</strong>: <a href="https://raw.githubusercontent.com/Pweidemueller/beast2analysisutils/main/src/beast2analysisutils/data/templates/Template_fixedtree.xml">Template_fixedtree.xml</a></li>
+</ul>
+<h4 id="step-2-generate-xml">Step 2: Generate XML</h4>
+<p>Use the <code>generate_xml</code> wrapper function.</p>
+<p><strong>Scenario A: Standard Analysis (Tree will be estimated)</strong>
+Requires both a Nexus alignment file and a Tree file from ReMASTER.</p>
+<pre><code class="language-python">from beast2analysisutils.remaster import generate_xml
+
+generate_xml(
+    template_path=&quot;./Template.xml&quot;,
+    tree_path=&quot;simulation.trees&quot;,      # ReMASTER tree output
+    output_path=&quot;output.xml&quot;,
+    alignment_path=&quot;simulation.nexus&quot;, # ReMASTER alignment output
+    fixed_tree=False                   # Default
+)
+</code></pre>
+<p><strong>Scenario B: Fixed Tree Analysis</strong>
+Uses the simulated tree directly in the XML. Nexus file is optional (dummy sequences will be generated if missing).</p>
+<pre><code class="language-python">from beast2analysisutils.remaster import generate_xml
+
+generate_xml(
+    template_path=&quot;./Template_fixedtree.xml&quot;,
+    tree_path=&quot;simulation.trees&quot;,
+    output_path=&quot;output_fixed.xml&quot;,
+    alignment_path=None,               # Optional for fixed tree
+    fixed_tree=True
+)
+</code></pre>
+<h3 id="2-ess-analysis">2. ESS Analysis</h3>
+<p>Calculate ESS for all parameters in a BEAST2 log file to check for convergence.</p>
+<pre><code class="language-python">from beast2analysisutils.ess import analyze_ess
+
+# Calculate ESS for all numeric columns
+ess_df = analyze_ess(
+    log_source=&quot;beast_output.log&quot;,
+    output_path=&quot;ess_results.csv&quot;,
+    burnin=0.1,             # 10% burn-in
+    check_threshold=True    # Check if ESS &gt; 200 for key parameters
+)
+
+print(ess_df.head())
+</code></pre>
+<h2 id="detailed-documentation">Detailed Documentation</h2>
+<h3 id="remaster-to-beast2-xml-workflow">ReMASTER to BEAST2 XML Workflow</h3>
+<p>This package provides functionality to generate BEAST2 XML configuration files by combining a template XML with simulation data.</p>
+<h4 id="wrapper-function-generate_xml">Wrapper Function: <code>generate_xml</code></h4>
+<p>The <code>generate_xml</code> function is the main entry point. It performs the following steps:
+1.  <strong>Validates Inputs</strong>: Checks for required files based on <code>fixed_tree</code> mode.
+2.  <strong>Extracts Data</strong>: Parses sequences, leaf dates, and types from input files.
+3.  <strong>Consistency Check</strong>: Verifies that the number of sequences matches the number of tree leaves.
+4.  <strong>Prints Stats</strong>: Displays sequence counts, leaf counts, trait distribution, and date ranges.
+5.  <strong>Generates XML</strong>: Fills the template with the processed data.</p>
+<h4 id="xml-template-requirements">XML Template Requirements</h4>
+<p>Your input template XML must be a valid BEAST2 XML file containing specific placeholders:</p>
+<ol>
+<li><code>INSERTSEQUENCES</code>: Replaced with <code>&lt;sequence&gt;</code> blocks.</li>
+<li><code>INSERTTRAITDATES</code>: (not needed for fixed tree) Replaced with <code>taxon=date</code> pairs (YYYY/MM/DD).</li>
+<li><code>INSERTTRAITTYPES</code>: Replaced with <code>taxon=type</code> pairs.</li>
+<li><code>INSERTNEWICKTREE</code>: (Fixed tree only) Replaced with the Newick tree string.</li>
+</ol>
+<p><strong>Example Template Structure:</strong></p>
+<pre><code class="language-xml">&lt;data id=&quot;alignment&quot; spec=&quot;Alignment&quot;&gt;
+    INSERTSEQUENCES
+&lt;/data&gt;
+
+&lt;trait id=&quot;dateTrait&quot; spec=&quot;beast.base.evolution.tree.TraitSet&quot; traitname=&quot;date&quot; value=&quot;INSERTTRAITDATES&quot;&gt;
+    ...
+&lt;/trait&gt;
+
+&lt;trait id=&quot;typeTrait&quot; spec=&quot;mascot.util.InitializedTraitSet&quot; traitname=&quot;type&quot; value=&quot;INSERTTRAITTYPES&quot;&gt;
+    ...
+&lt;/trait&gt;
+
+&lt;!-- For Fixed Tree templates --&gt;
+&lt;init id=&quot;NewickTree&quot; spec=&quot;beast.base.evolution.tree.TreeParser&quot; newick=&quot;INSERTNEWICKTREE&quot; .../&gt;
+</code></pre>
+<h3 id="time-and-date-interpretation">Time and Date Interpretation</h3>
+<p>ReMASTER simulations typically output trees with a <code>time</code> attribute (years since simulation start).
+The package converts these to calendar dates using a reference <code>start_date</code> (default "2000/01/01").
+leaf_date = <code>start_date</code> + <code>time</code> (converted to days).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.expand", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
